@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package VentanaControlador;
+package VentanaInformacion;
 
 /**
  *
- * @author Jean Paul
+ * @author Mauricio
  */
-public class ThreadVentana  {
+public class VentanaInformacion {
     
 }
