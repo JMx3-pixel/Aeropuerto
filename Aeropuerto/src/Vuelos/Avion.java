@@ -10,5 +10,16 @@ package Vuelos;
  * @author Jean Paul
  */
 public class Avion {
-    
+    int tamano;
+    int tipo;
+    boolean aTiempo;
+    public Avion(int tamano, int tipo, boolean atiempo){
+        this.tamano = tamano;
+        this.aTiempo = atiempo;
+        this.tipo = tipo;
+    }
+    @Override
+    public String toString(){
+        return "tamano: " + tamano + ", a tiempo: " + aTiempo + ", tipo: " + tipo;
+    }
 }
