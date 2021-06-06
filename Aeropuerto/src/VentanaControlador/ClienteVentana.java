@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controlador;
+package VentanaControlador;
 
 /**
  *
  * @author Jean Paul
  */
-public class Pista {
+public class ClienteVentana {
     
 }
