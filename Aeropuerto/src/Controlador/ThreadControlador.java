@@ -52,7 +52,7 @@ public class ThreadControlador extends Thread{
             current.writer.writeUTF(mensaje);
             }
             break;
-            }*
+            }
         }
     }
 }
