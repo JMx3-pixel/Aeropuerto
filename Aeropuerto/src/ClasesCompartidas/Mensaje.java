@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vuelos;
+package ClasesCompartidas;
 
 /**
  *
- * @author Mauricio
+ * @author Jean Paul
  */
-public class Vuelos {
-    
+public enum Mensaje {
+    CREACIONAVION;
 }

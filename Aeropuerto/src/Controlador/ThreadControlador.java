@@ -5,8 +5,12 @@
  */
 package Controlador;
 
+import ClasesCompartidas.Mensaje;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,17 +19,26 @@ import java.net.Socket;
 public class ThreadControlador extends Thread{
     private Socket socketRef;
     private boolean running = true;
-    ServidorControlador server;
+    public ObjectInputStream reader;
+    public ServidorControlador server;
     
     public ThreadControlador(Socket socketRef, ServidorControlador server) throws IOException {
         this.socketRef = socketRef;
+        this.reader = new ObjectInputStream(socketRef.getInputStream());
         this.server = server;
     }
     
     public void run (){
-        int instruccionId = 1;
+        Mensaje instruccionId;
         while (running){
-            /*instruccionId = reader.readInt(); // esperar hasta que reciba un entero
+            try {
+                instruccionId = (Mensaje) reader.readObject(); // esperar hasta que reciba un enum
+            } catch (IOException ex) {
+                Logger.getLogger(ThreadControlador.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ThreadControlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             switch (instruccionId){
             case 1: // pasan el nombre del usuario
             nombre = reader.readUTF();
@@ -39,7 +52,7 @@ public class ThreadControlador extends Thread{
             current.writer.writeUTF(mensaje);
             }
             break;
-            }*/ 
+            }*
         }
     }
 }

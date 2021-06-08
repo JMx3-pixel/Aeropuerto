@@ -5,6 +5,8 @@
  */
 package Controlador;
 
+import ClasesCompartidas.JsonClass;
+
 /**
  *
  * @author Jean Paul
@@ -15,7 +17,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        ServidorControlador controlador = new ServidorControlador();
+        controlador.runServer();
+        
     }
     
 }

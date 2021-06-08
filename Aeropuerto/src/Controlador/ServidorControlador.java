@@ -5,6 +5,7 @@
  */
 package Controlador;
 
+import ClasesCompartidas.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -17,6 +18,10 @@ public class ServidorControlador {
     public ArrayList<ThreadControlador> conexiones;
     private boolean running = true;
     private ServerSocket server;
+    public ArrayList<Puerta> listaPuerta;
+    public ArrayList<Avion> listaPendientes;
+    public ArrayList<Pista> listaPuertas;
+    
 
     public ServidorControlador() {
         this.conexiones = new ArrayList<ThreadControlador>();
@@ -27,7 +32,6 @@ public class ServidorControlador {
     }
     
     public void runServer(){
-        int contadorDeConexiones = 0;
         try{
             server = new ServerSocket(35577);
             while (running){

@@ -5,6 +5,7 @@
  */
 package Vuelos;
 
+import ClasesCompartidas.JsonClass;
 import VentanaControlador.*;
 
 /**
@@ -16,7 +17,9 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JsonClass json = new JsonClass();
-        json.readJson();
+        ClienteVuelos vuelos = new ClienteVuelos();
+        vuelos.conectar();
+        vuelos.crearAviones();
+        vuelos.enviarAviones();
     }
 }
