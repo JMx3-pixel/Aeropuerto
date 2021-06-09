@@ -5,46 +5,76 @@
  */
 package VentanaControlador;
 
+import ClasesCompartidas.Mensaje;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Jean Paul
  */
-public class ThreadVentana {
+public class ThreadVentana extends Thread{
     private Socket socketRef;
-    public DataInputStream reader;
-    public DataOutputStream writer;
-    private String nombre;
+    public ObjectInputStream reader;
+    public ObjectOutputStream writer;
+    public DataInputStream readerUTF;
+    public DataOutputStream writerUTF;
+    public String nombre;
     private boolean running = true;
 
-    public ThreadVentana(Socket socketRef) throws IOException {
+    public ThreadVentana(Socket socketRef) throws IOException{
         this.socketRef = socketRef;
-        reader = new DataInputStream(socketRef.getInputStream());
-        writer = new DataOutputStream(socketRef.getOutputStream());
+        reader = new ObjectInputStream(socketRef.getInputStream());
+        writer = new ObjectOutputStream(socketRef.getOutputStream());
+        readerUTF = new DataInputStream(socketRef.getInputStream());
+        writerUTF = new DataOutputStream(socketRef.getOutputStream());
     }
     
+    /**
+     *
+     */
+    @Override
     public void run (){
-        
-        int instruccionId = 1;
+        Mensaje instruccionId;
         while (running){
             try {
-                instruccionId = reader.readInt(); // esperar hasta que reciba un entero
-                
+                instruccionId = (Mensaje) reader.readObject(); // esperar hasta que reciba un entero 
                 switch (instruccionId){
-
-                    case 2: // pasan un mensaje por el chat
-                        String usuario = reader.readUTF();
-                        String mensaje = reader.readUTF();
-                        //System.out.println("CLIENTE Recibido mensaje: " + mensaje);
-                    break;
+                    case REENVIOAVIONES: // pasan un mensaje por el chat
+                        System.out.println("Aviones recividos");
+                        break;
+                        
+                    default:
+                        break;
                 }
-            } catch (IOException ex) {
                 
+            } catch (IOException ex) {
             }
+            catch (ClassNotFoundException ex) {
+                    Logger.getLogger(ThreadVentana.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public void escribir(Mensaje sms){
+        try {
+            writer.writeObject(sms);
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadVentana.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void escribirTexto(String texto){
+        try {
+            writerUTF.writeUTF(texto);
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadVentana.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

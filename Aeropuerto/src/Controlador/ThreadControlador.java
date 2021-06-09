@@ -5,9 +5,13 @@
  */
 package Controlador;
 
+import ClasesCompartidas.Funciones;
 import ClasesCompartidas.Mensaje;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,39 +24,55 @@ public class ThreadControlador extends Thread{
     private Socket socketRef;
     private boolean running = true;
     public ObjectInputStream reader;
+    public ObjectOutputStream writer;
+    public DataInputStream readerUTF;
     public ServidorControlador server;
+    public String nombre;
     
     public ThreadControlador(Socket socketRef, ServidorControlador server) throws IOException {
         this.socketRef = socketRef;
-        this.reader = new ObjectInputStream(socketRef.getInputStream());
         this.server = server;
+        this.reader = new ObjectInputStream(socketRef.getInputStream());
+        //System.out.println("hola");
+        this.writer = new ObjectOutputStream(socketRef.getOutputStream());
+        this.readerUTF = new DataInputStream(socketRef.getInputStream());
+        this.nombre = "";
     }
     
+    /**
+     *
+     */
+    @Override
     public void run (){
         Mensaje instruccionId;
         while (running){
             try {
-                instruccionId = (Mensaje) reader.readObject(); // esperar hasta que reciba un enum
+                instruccionId = (Mensaje) reader.readObject();
+                switch (instruccionId){
+                    case ENVIONOMBRE:
+                        nombre = readerUTF.readUTF();
+                        System.out.println(nombre + " Registrado");
+                    case CREACIONAVIONES:
+                        for (int i = 0; i < server.conexiones.size(); i++)
+                            if(server.conexiones.get(i).nombre == "VentanaControlador")
+                                server.conexiones.get(i).escribir(Mensaje.REENVIOAVIONES);
+                        System.out.println("Recibido");
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
             } catch (IOException ex) {
                 Logger.getLogger(ThreadControlador.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ThreadControlador.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            switch (instruccionId){
-            case 1: // pasan el nombre del usuario
-            nombre = reader.readUTF();
-            break;
-            case 2: // pasan un mensaje por el chat
-            String mensaje = reader.readUTF();
-            for (int i = 0; i < server.conexiones.size(); i++) {
-            ThreadServidor current = server.conexiones.get(i);
-            current.writer.writeInt(2);
-            current.writer.writeUTF(nombre);
-            current.writer.writeUTF(mensaje);
-            }
-            break;
-            }*
         }
     }
+    
+    public void escribir(Mensaje sms) throws IOException{
+        writer.writeObject(sms);
+    }
+
 }

@@ -10,5 +10,7 @@ package ClasesCompartidas;
  * @author Jean Paul
  */
 public enum Mensaje {
-    CREACIONAVION;
+    ENVIONOMBRE,
+    CREACIONAVIONES,
+    REENVIOAVIONES;
 }

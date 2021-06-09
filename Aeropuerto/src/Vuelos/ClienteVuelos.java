@@ -6,9 +6,13 @@
 package Vuelos;
 
 import ClasesCompartidas.*;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,25 +21,48 @@ import java.util.ArrayList;
 public class ClienteVuelos {
     public Socket socketRef;
     public ObjectOutputStream writer;
+    public DataOutputStream writerUTF;
     private JsonClass jsonObj;
     public ArrayList<Avion> aviones;
-    public Mensaje mensaje;
+    public String nombre;
     
     public ClienteVuelos(){
         jsonObj = new JsonClass();
         aviones = new ArrayList<Avion>();
+        nombre = "Vuelos";
     }
     
     public void conectar(){
         try{
-            socketRef = new Socket("localhost", 35577);
+            socketRef = new Socket("localhost", 35578);
             writer = new ObjectOutputStream(socketRef.getOutputStream());
-            //hiloCliente.writer.writeInt(1); //instruccion para el switch del thraed servidor
-            //hiloCliente.writer.writeUTF(nombre); //instruccion para el switch del thraed servidor
+            writerUTF = new DataOutputStream(socketRef.getOutputStream());
+            escribir(Mensaje.ENVIONOMBRE);
+            escribirTexto(nombre);
+            System.out.println("Solicitud enviada");
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
+        enviarAviones();
+    }
+    
+    
+    public void escribir(Mensaje sms){
+        try {
+            writer.writeObject(sms);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteVuelos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void escribirTexto(String texto){
+        try {
+            writerUTF.writeUTF(texto);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteVuelos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     
@@ -50,6 +77,7 @@ public class ClienteVuelos {
     
     public void enviarAviones(){
         //escribir los aviones en el json
-        Funciones.escribirMensaje(writer, mensaje.CREACIONAVION);
+        escribir(Mensaje.CREACIONAVIONES);
+        System.out.println("Enviado");
     }
 }

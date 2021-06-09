@@ -15,9 +15,9 @@ import java.util.ArrayList;
  * @author Jean Paul
  */
 public class ServidorControlador {
-    public ArrayList<ThreadControlador> conexiones;
-    private boolean running = true;
     private ServerSocket server;
+    private boolean running = true;
+    public ArrayList<ThreadControlador> conexiones;
     public ArrayList<Puerta> listaPuerta;
     public ArrayList<Avion> listaPendientes;
     public ArrayList<Pista> listaPuertas;
@@ -33,13 +33,16 @@ public class ServidorControlador {
     
     public void runServer(){
         try{
-            server = new ServerSocket(35577);
-            while (running){
+            server = new ServerSocket(35578);
+            while (running) {
+                System.out.println("::Esperando conexion...");
                 Socket nuevaConexion = server.accept();
+                System.out.println("Conexion aceptada");
                 // nuevo thread
-                ThreadControlador newThread = new ThreadControlador(nuevaConexion, this);
-                conexiones.add(newThread);
-                newThread.start();
+                //ThreadControlador newThread = new ThreadControlador(nuevaConexion, this);
+                //conexiones.add(newThread);
+                //newThread.start();
+                
             }
         }
         catch(Exception e)

@@ -41,14 +41,6 @@ public class JsonClass {
         public void writeJson(){
             Gson gson = new Gson();
 
-            try (Writer writer = new FileWriter("src\\ClasesCompartidas\\aviones.json")) {
-                
-                // Convert JSON File to Java Object
-                //Avion[] arregloAvion = gson.fromJson(writer, Avion[].class);
-                
-            } 
-            catch (IOException e) {
-                System.out.println("Error al leer el json");
-            }
+            
         }
 }

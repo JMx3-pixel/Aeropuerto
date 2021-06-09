@@ -19,7 +19,5 @@ public class Main {
     public static void main(String[] args) {
         ClienteVuelos vuelos = new ClienteVuelos();
         vuelos.conectar();
-        vuelos.crearAviones();
-        vuelos.enviarAviones();
     }
 }
