@@ -38,9 +38,17 @@ public class JsonClass {
             }
         }
         
-        public void writeJson(){
+        public void writeJson(ArrayList<Avion> arregloAvion){
             Gson gson = new Gson();
 
-            
+            try (Writer writer = new FileWriter("src\\ClasesCompartidas\\prueba.json")) {
+                Avion[] array = new Avion[arregloAvion.size()];
+                for (int i = 0; i < arregloAvion.size(); i++) {
+                    array[i] = arregloAvion.get(i);
+                }
+                gson.toJson(array, writer);            } 
+            catch (IOException e) {
+                System.out.println("Error al leer el json");
+            }
         }
 }
