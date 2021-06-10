@@ -6,8 +6,12 @@
 package Controlador;
 
 import ClasesCompartidas.Mensaje;
+import VentanaControlador.ThreadVentana;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,12 +24,20 @@ public class ThreadControlador extends Thread{
     private Socket socketRef;
     private boolean running = true;
     public ObjectInputStream reader;
+    public ObjectOutputStream writer;
+    public DataOutputStream writerUTF;
+    public DataInputStream readerUTF;
     public ServidorControlador server;
+    public String nombre;
     
     public ThreadControlador(Socket socketRef, ServidorControlador server) throws IOException {
         this.socketRef = socketRef;
         this.reader = new ObjectInputStream(socketRef.getInputStream());
+        this.writer = new ObjectOutputStream(socketRef.getOutputStream());
+        this.writerUTF = new DataOutputStream(socketRef.getOutputStream());
+        this.readerUTF = new DataInputStream(socketRef.getInputStream());
         this.server = server;
+        nombre = "";
     }
     
     public void run (){
@@ -33,26 +45,36 @@ public class ThreadControlador extends Thread{
         while (running){
             try {
                 instruccionId = (Mensaje) reader.readObject(); // esperar hasta que reciba un enum
+                
+                switch (instruccionId){
+                    case CREACIONAVIONES: // pasan el nombre del usuario
+                        nombre = reader.readUTF();
+                        break;
+                    default:
+                        break;
+                }
+                
             } catch (IOException ex) {
                 Logger.getLogger(ThreadControlador.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ThreadControlador.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            switch (instruccionId){
-            case 1: // pasan el nombre del usuario
-            nombre = reader.readUTF();
-            break;
-            case 2: // pasan un mensaje por el chat
-            String mensaje = reader.readUTF();
-            for (int i = 0; i < server.conexiones.size(); i++) {
-            ThreadServidor current = server.conexiones.get(i);
-            current.writer.writeInt(2);
-            current.writer.writeUTF(nombre);
-            current.writer.writeUTF(mensaje);
-            }
-            break;
-            }
+        }
+    }
+    
+    public void escribir(Mensaje sms){
+        try {
+            writer.writeObject(sms);
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadVentana.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void escribirTexto(String texto){
+        try {
+            writerUTF.writeUTF(texto);
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadVentana.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
