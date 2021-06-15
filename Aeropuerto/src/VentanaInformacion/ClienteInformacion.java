@@ -29,7 +29,7 @@ public class ClienteInformacion {
     public void conectar(){
         try{
             socketRef = new Socket("localhost", 35578);
-            hilo = new ThreadInformacion(socketRef);
+            hilo = new ThreadInformacion(socketRef, this);
             hilo.start();
             hilo.escribir(Mensaje.ENVIONOMBRE);
             hilo.escribirTexto(nombre);
@@ -40,4 +40,8 @@ public class ClienteInformacion {
         }
     }
     
+    
+    public void leerInformacion(){
+        aviones = JsonClass.readJson("aviones");
+    }
 }

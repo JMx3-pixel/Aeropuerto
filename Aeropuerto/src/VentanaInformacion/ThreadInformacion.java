@@ -26,10 +26,12 @@ public class ThreadInformacion extends Thread{
     public DataInputStream readerUTF;
     public DataOutputStream writerUTF;
     public String nombre;
+    public ClienteInformacion cliente;
     private boolean running = true;
 
-    public ThreadInformacion(Socket socketRef) throws IOException{
+    public ThreadInformacion(Socket socketRef, ClienteInformacion cliente) throws IOException{
         this.socketRef = socketRef;
+        this.cliente = cliente;
         reader = new ObjectInputStream(socketRef.getInputStream());
         writer = new ObjectOutputStream(socketRef.getOutputStream());
         readerUTF = new DataInputStream(socketRef.getInputStream());
@@ -46,7 +48,8 @@ public class ThreadInformacion extends Thread{
             try {
                 instruccionId = (Mensaje) reader.readObject(); // esperar hasta que reciba un entero 
                 switch (instruccionId){
-                        
+                    case ENVIOINFORMACION:
+                        cliente.leerInformacion();
                     default:
                         break;
                 }

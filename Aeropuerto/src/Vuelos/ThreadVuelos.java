@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package VentanaControlador;
+package Vuelos;
 
 import ClasesCompartidas.Mensaje;
 import java.io.DataInputStream;
@@ -19,19 +19,17 @@ import java.util.logging.Logger;
  *
  * @author Jean Paul
  */
-public class ThreadVentana extends Thread{
+public class ThreadVuelos extends Thread{
     private Socket socketRef;
     public ObjectInputStream reader;
     public ObjectOutputStream writer;
     public DataInputStream readerUTF;
     public DataOutputStream writerUTF;
     public String nombre;
-    public ClienteVentana cliente;
     private boolean running = true;
 
-    public ThreadVentana(Socket socketRef, ClienteVentana cliente) throws IOException{
+    public ThreadVuelos(Socket socketRef) throws IOException{
         this.socketRef = socketRef;
-        this.cliente = cliente;
         reader = new ObjectInputStream(socketRef.getInputStream());
         writer = new ObjectOutputStream(socketRef.getOutputStream());
         readerUTF = new DataInputStream(socketRef.getInputStream());
@@ -48,10 +46,6 @@ public class ThreadVentana extends Thread{
             try {
                 instruccionId = (Mensaje) reader.readObject(); // esperar hasta que reciba un entero 
                 switch (instruccionId){
-                    case REENVIOAVIONES: // pasan un mensaje por el chat
-                        System.out.println("Aviones recividos");
-                        cliente.leerAviones();
-                        break;
                         
                     default:
                         break;
@@ -60,7 +54,7 @@ public class ThreadVentana extends Thread{
             } catch (IOException ex) {
             }
             catch (ClassNotFoundException ex) {
-                    Logger.getLogger(ThreadVentana.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ThreadVuelos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -69,7 +63,7 @@ public class ThreadVentana extends Thread{
         try {
             writer.writeObject(sms);
         } catch (IOException ex) {
-            Logger.getLogger(ThreadVentana.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ThreadVuelos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -77,9 +71,7 @@ public class ThreadVentana extends Thread{
         try {
             writerUTF.writeUTF(texto);
         } catch (IOException ex) {
-            Logger.getLogger(ThreadVentana.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ThreadVuelos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
 }

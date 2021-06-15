@@ -6,6 +6,7 @@
 package Vuelos;
 
 import ClasesCompartidas.*;
+import VentanaControlador.ThreadVentana;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -23,6 +24,7 @@ public class ClienteVuelos {
     public ObjectOutputStream writer;
     public DataOutputStream writerUTF;
     private JsonClass jsonObj;
+    public ThreadVuelos hilo;
     public ArrayList<Avion> aviones;
     public String nombre;
     
@@ -35,15 +37,17 @@ public class ClienteVuelos {
     public void conectar(){
         try{
             socketRef = new Socket("localhost", 35578);
-            writer = new ObjectOutputStream(socketRef.getOutputStream());
-            writerUTF = new DataOutputStream(socketRef.getOutputStream());
-            escribir(Mensaje.ENVIONOMBRE);
-            escribirTexto(nombre);
+            hilo = new ThreadVuelos(socketRef);
+            hilo.start();
+            hilo.escribir(Mensaje.ENVIONOMBRE);
+            hilo.escribirTexto(nombre);
             System.out.println("Solicitud enviada");
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
+        
+        crearAviones();
         enviarAviones();
     }
     
@@ -67,7 +71,7 @@ public class ClienteVuelos {
     
     
     public void crearAviones(){
-        int n = Funciones.getRandom(0, 20);
+        int n = Funciones.getRandom(3, 10);
         for (int i = 0; i < n; i++) {
             Avion avion = new Avion();
             avion.doRandom();
@@ -76,7 +80,7 @@ public class ClienteVuelos {
     }
     
     public void enviarAviones(){
-        //escribir los aviones en el json
+        JsonClass.writeJson(aviones, "prueba");
         escribir(Mensaje.CREACIONAVIONES);
         System.out.println("Enviado");
     }

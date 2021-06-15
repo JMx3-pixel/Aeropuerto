@@ -39,10 +39,10 @@ public class ServidorControlador {
                 Socket nuevaConexion = server.accept();
                 System.out.println("Conexion aceptada");
                 // nuevo thread
-                //ThreadControlador newThread = new ThreadControlador(nuevaConexion, this);
-                //conexiones.add(newThread);
-                //newThread.start();
-                
+                ThreadControlador newThread = new ThreadControlador(nuevaConexion, this);
+                conexiones.add(newThread);
+                newThread.start();
+                System.out.println("run");
             }
         }
         catch(Exception e)

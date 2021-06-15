@@ -11,10 +11,12 @@ package VentanaInformacion;
  */
 public class PantallaInformacion extends javax.swing.JFrame {
 
+    public ClienteInformacion cliente;
     /**
      * Creates new form PantallaInformacion
      */
     public PantallaInformacion() {
+        cliente = new ClienteInformacion();
         initComponents();
     }
 

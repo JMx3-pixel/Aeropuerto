@@ -29,7 +29,7 @@ public class ClienteVentana {
     public void conectar(){
         try{
             socketRef = new Socket("localhost", 35578);
-            hilo = new ThreadVentana(socketRef);
+            hilo = new ThreadVentana(socketRef, this);
             hilo.start();
             hilo.escribir(Mensaje.ENVIONOMBRE);
             hilo.escribirTexto(nombre);
@@ -40,4 +40,7 @@ public class ClienteVentana {
         }
     }
     
+    public void leerAviones(){
+        aviones = JsonClass.readJson("prueba");
+    }
 }

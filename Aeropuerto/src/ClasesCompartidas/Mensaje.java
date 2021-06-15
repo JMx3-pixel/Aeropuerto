@@ -5,12 +5,15 @@
  */
 package ClasesCompartidas;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Jean Paul
  */
-public enum Mensaje {
+public enum Mensaje implements Serializable{
     ENVIONOMBRE,
     CREACIONAVIONES,
-    REENVIOAVIONES;
+    REENVIOAVIONES,
+    ENVIOINFORMACION;
 }

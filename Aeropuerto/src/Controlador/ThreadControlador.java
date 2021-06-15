@@ -40,15 +40,20 @@ public class ThreadControlador extends Thread{
         nombre = "";
     }
     
+    @Override
     public void run (){
         Mensaje instruccionId;
         while (running){
             try {
                 instruccionId = (Mensaje) reader.readObject(); // esperar hasta que reciba un enum
-                
+                //reader.reset();
                 switch (instruccionId){
-                    case CREACIONAVIONES: // pasan el nombre del usuario
-                        nombre = reader.readUTF();
+                    case ENVIONOMBRE: // pasan el nombre del usuario
+                        //nombre = readerUTF.readUTF();
+                        System.out.println("nombre recibido");
+                        break;
+                    case CREACIONAVIONES:
+                        System.out.println("Aviones Recibidos");
                         break;
                     default:
                         break;
@@ -56,8 +61,8 @@ public class ThreadControlador extends Thread{
                 
             } catch (IOException ex) {
                 Logger.getLogger(ThreadControlador.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ThreadControlador.class.getName()).log(Level.SEVERE, null, ex);
+            } catch(Exception e){
+                System.out.println("error error");
             }
         }
     }
