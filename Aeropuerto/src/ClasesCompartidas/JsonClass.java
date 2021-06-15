@@ -8,6 +8,7 @@ package ClasesCompartidas;
 import com.google.gson.Gson;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -21,27 +22,26 @@ public class JsonClass {
         this.datos = new ArrayList<String>();
     }
     
-        public void readJson(){
+        public static ArrayList<Avion> readJson(String direccion){
             Gson gson = new Gson();
-
-            try (Reader reader = new FileReader("src\\ClasesCompartidas\\aviones.json")) {
+            ArrayList<Avion> arreglo = new ArrayList();
+            try (Reader reader = new FileReader("src\\ClasesCompartidas\\"+ direccion +".json")) {
                 
                 // Convert JSON File to Java Object
                 Avion[] arregloAvion = gson.fromJson(reader, Avion[].class);
                 
-                for(Avion avion : arregloAvion) {
-                    System.out.println(avion.toString());
-                }
+                arreglo.addAll(Arrays.asList(arregloAvion));
             } 
             catch (IOException e) {
                 System.out.println("Error al leer el json");
             }
+            return arreglo;
         }
         
-        public void writeJson(ArrayList<Avion> arregloAvion){
+        public static void writeJson(ArrayList<Avion> arregloAvion, String direccion){
             Gson gson = new Gson();
 
-            try (Writer writer = new FileWriter("src\\ClasesCompartidas\\prueba.json")) {
+            try (Writer writer = new FileWriter("src\\ClasesCompartidas\\" + direccion +".json")) {
                 Avion[] array = new Avion[arregloAvion.size()];
                 for (int i = 0; i < arregloAvion.size(); i++) {
                     array[i] = arregloAvion.get(i);

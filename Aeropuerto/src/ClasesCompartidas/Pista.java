@@ -10,5 +10,6 @@ package ClasesCompartidas;
  * @author Jean Paul
  */
 public class Pista {
+
     
 }

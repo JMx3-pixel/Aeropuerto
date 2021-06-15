@@ -18,12 +18,12 @@ public class Main {
      */
     public static void main(String[] args) {
         JsonClass json = new JsonClass();
-        Avion avion = new Avion("a", "d", true);
+        Avion avion = new Avion("s", "d", true);
         Avion avionb = new Avion("b", "c", true);
         ArrayList<Avion> aviones = new ArrayList<Avion>();
         aviones.add(avion);
         aviones.add(avionb);
-        json.writeJson(aviones);
+        json.writeJson(aviones, "prueba");
     }
 
 }

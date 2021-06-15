@@ -11,24 +11,26 @@ package ClasesCompartidas;
  */
 public class Avion {
     String tamano;
-    String tipo;
     boolean aTiempo;
+    int pista;
+    int puerta;
+    String estado;
     
     public Avion(){
         this.tamano = "";
         this.aTiempo = true;
-        this.tipo = "";
+        //this.tipo = "";
     }
     
     public Avion(String tamano, String tipo, boolean atiempo){
         this.tamano = tamano;
         this.aTiempo = atiempo;
-        this.tipo = tipo;
+        //this.tipo = tipo;
     }
     
     @Override
     public String toString(){
-        return "tamano: " + tamano + ", a tiempo: " + aTiempo + ", tipo: " + tipo;
+        return "tamano: " + tamano + ", a tiempo: " + aTiempo;
     }
     
     public String tamanoAleatorio(){
@@ -63,7 +65,7 @@ public class Avion {
     public void doRandom(){
         this.aTiempo = tiempoAleatorio();
         this.tamano = tamanoAleatorio();
-        this.tipo = tipoAleatorio();
+        //this.tipo = tipoAleatorio();
     }
     
     
