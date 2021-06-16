@@ -27,8 +27,10 @@ public class ClienteVuelos {
     public ThreadVuelos hilo;
     public ArrayList<Avion> aviones;
     public String nombre;
+    int contador;
     
     public ClienteVuelos(){
+        contador = 0;
         jsonObj = new JsonClass();
         aviones = new ArrayList<Avion>();
         nombre = "Vuelos";
@@ -73,7 +75,7 @@ public class ClienteVuelos {
     public void crearAviones(){
         int n = Funciones.getRandom(3, 10);
         for (int i = 0; i < n; i++) {
-            Avion avion = new Avion();
+            Avion avion = new Avion(i);
             avion.doRandom();
             aviones.add(avion);
         }

@@ -10,22 +10,25 @@ package ClasesCompartidas;
  * @author Jean Paul
  */
 public class Avion {
-    String tamano;
-    boolean aTiempo;
-    int pista;
-    int puerta;
-    String estado;
+    public int codigo;
+    public String tamano;
+    public boolean aTiempo;
+    public int pista;
+    public int puerta;
+    public String estado;
     
-    public Avion(){
+    public Avion(int codigo){
+        this.codigo = codigo;
         this.tamano = "";
         this.aTiempo = true;
-        //this.tipo = "";
+        this.estado = "llegando";
     }
     
-    public Avion(String tamano, String tipo, boolean atiempo){
+    public Avion(int codigo, String tamano, String tipo, boolean atiempo){
+        this.codigo = codigo;
         this.tamano = tamano;
         this.aTiempo = atiempo;
-        //this.tipo = tipo;
+        this.estado = "llegando";
     }
     
     @Override

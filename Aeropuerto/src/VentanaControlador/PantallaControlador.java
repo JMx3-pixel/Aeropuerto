@@ -5,16 +5,20 @@
  */
 package VentanaControlador;
 
+import VentanaInformacion.ClienteInformacion;
+
 /**
  *
  * @author Mauricio
  */
 public class PantallaControlador extends javax.swing.JFrame {
-
+    ClienteInformacion cliente;
     /**
      * Creates new form PantallaVuelos
      */
     public PantallaControlador() {
+        cliente = new ClienteInformacion();
+        cliente.conectar();
         initComponents();
     }
 

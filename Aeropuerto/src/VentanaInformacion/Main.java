@@ -18,7 +18,8 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        
+        PantallaInformacion pantalla = new PantallaInformacion();
+        pantalla.setVisible(true);
         
     }
 }
