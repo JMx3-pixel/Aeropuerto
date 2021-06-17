@@ -10,6 +10,10 @@ package ClasesCompartidas;
  * @author Jean Paul
  */
 public class Pista {
-
+    public boolean disponible;
+    public String tipo;
+    public Pista(String tipo){
+        this.tipo = tipo;
+    }
     
 }

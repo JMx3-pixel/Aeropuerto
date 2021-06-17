@@ -16,6 +16,7 @@ public class Avion {
     public int pista;
     public int puerta;
     public String estado;
+    public int tiempo = 10;
     
     public Avion(int codigo){
         this.codigo = codigo;
@@ -29,6 +30,8 @@ public class Avion {
         this.tamano = tamano;
         this.aTiempo = atiempo;
         this.estado = "llegando";
+        if(! aTiempo)
+            this.tiempo += 5;
     }
     
     @Override

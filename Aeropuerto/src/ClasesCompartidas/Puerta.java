@@ -10,5 +10,11 @@ package ClasesCompartidas;
  * @author Jean Paul
  */
 public class Puerta {
+    public int num;
+    public boolean disponible;
+    public Puerta(int num){
+        this.num = num;
+        disponible = true;   
+    }
     
 }
