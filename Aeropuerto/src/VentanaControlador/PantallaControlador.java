@@ -13,6 +13,7 @@ import java.util.ArrayList;
  *
  * @author Mauricio
  */
+
 public class PantallaControlador extends javax.swing.JFrame {
     ClienteInformacion cliente;
     /**

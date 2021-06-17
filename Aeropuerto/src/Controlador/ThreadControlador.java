@@ -5,13 +5,9 @@
  */
 package Controlador;
 
-import ClasesCompartidas.Mensaje;
-import VentanaControlador.ThreadVentana;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,38 +19,34 @@ import java.util.logging.Logger;
 public class ThreadControlador extends Thread{
     private Socket socketRef;
     private boolean running = true;
-    public ObjectInputStream reader;
-    public ObjectOutputStream writer;
-    public DataOutputStream writerUTF;
-    public DataInputStream readerUTF;
+    public DataOutputStream writer;
+    public DataInputStream reader;
     public ServidorControlador server;
     public String nombre;
     
     public ThreadControlador(Socket socketRef, ServidorControlador server) throws IOException {
         this.socketRef = socketRef;
-        this.reader = new ObjectInputStream(socketRef.getInputStream());
-        this.writer = new ObjectOutputStream(socketRef.getOutputStream());
-        this.writerUTF = new DataOutputStream(socketRef.getOutputStream());
-        this.readerUTF = new DataInputStream(socketRef.getInputStream());
+        this.writer = new DataOutputStream(socketRef.getOutputStream());
+        this.reader = new DataInputStream(socketRef.getInputStream());
         this.server = server;
         nombre = "";
     }
     
     @Override
     public void run (){
-        Mensaje instruccionId;
-        while (running){
+            String instruccionId;
             try {
-                instruccionId = (Mensaje) reader.readObject(); // esperar hasta que reciba un enum
-                //reader.reset();
+                instruccionId = reader.readUTF(); // esperar hasta que reciba un string
                 switch (instruccionId){
-                    case ENVIONOMBRE: // pasan el nombre del usuario
-                        //nombre = readerUTF.readUTF();
-                        System.out.println("nombre recibido");
+                    case "nombre":
+                        nombre = reader.readUTF();
+                        System.out.println("nombre: " + nombre);
                         break;
-                    case CREACIONAVIONES:
-                        System.out.println("Aviones Recibidos");
-                        break;
+                    case "avion":
+                        String avion = reader.readUTF();
+                        server.avionesString.add(avion);
+                        System.out.println("avion " +avion+ " recibido");
+                        
                     default:
                         break;
                 }
@@ -64,22 +56,18 @@ public class ThreadControlador extends Thread{
             } catch(Exception e){
                 System.out.println("error error");
             }
+    }
+    
+    public void escribir(String texto){
+        try {
+            writer.writeUTF(texto);
+            writer.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadControlador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void escribir(Mensaje sms){
-        try {
-            writer.writeObject(sms);
-        } catch (IOException ex) {
-            Logger.getLogger(ThreadVentana.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void escribirTexto(String texto){
-        try {
-            writerUTF.writeUTF(texto);
-        } catch (IOException ex) {
-            Logger.getLogger(ThreadVentana.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void enviarAvion(){
+          
     }
 }

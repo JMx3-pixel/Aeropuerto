@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
         
         ServidorControlador controlador = new ServidorControlador();
-        controlador.runServer();
+        controlador.start();
         
     }
     

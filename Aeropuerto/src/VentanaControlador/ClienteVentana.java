@@ -6,6 +6,8 @@
 package VentanaControlador;
 
 import ClasesCompartidas.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -15,13 +17,12 @@ import java.util.ArrayList;
  */
 public class ClienteVentana {
     public Socket socketRef;
-    public ThreadVentana hilo;
-    private JsonClass jsonObj;
+    public DataOutputStream writer;
+    public DataInputStream reader;
     public ArrayList<Avion> aviones;
     public String nombre;
     
     public ClienteVentana(){
-        jsonObj = new JsonClass();
         aviones = new ArrayList<Avion>();
         nombre = "VentanaControlador";
     }
@@ -29,10 +30,9 @@ public class ClienteVentana {
     public void conectar(){
         try{
             socketRef = new Socket("localhost", 35578);
-            hilo = new ThreadVentana(socketRef, this);
-            hilo.start();
-            hilo.escribir(Mensaje.ENVIONOMBRE);
-            hilo.escribirTexto(nombre);
+            reader = new DataInputStream(socketRef.getInputStream());
+            writer = new DataOutputStream(socketRef.getOutputStream());
+            
             System.out.println("Solicitud enviada");
         }
         catch(Exception e){

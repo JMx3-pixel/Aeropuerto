@@ -14,35 +14,34 @@ import java.util.ArrayList;
  *
  * @author Jean Paul
  */
-public class ServidorControlador {
+public class ServidorControlador extends Thread{
     private ServerSocket server;
     private boolean running = true;
-    public ArrayList<ThreadControlador> conexiones;
+    public ArrayList<String> avionesString;
     public ArrayList<Puerta> listaPuerta;
     public ArrayList<Avion> listaPendientes;
     public ArrayList<Pista> listaPuertas;
     
 
     public ServidorControlador() {
-        this.conexiones = new ArrayList<ThreadControlador>();
+        this.avionesString = new ArrayList<String>();
     }
     
     public void stopserver(){
         running = false;
     }
     
-    public void runServer(){
+    @Override
+    public void run(){
         try{
             server = new ServerSocket(35578);
             while (running) {
-                System.out.println("::Esperando conexion...");
+                //System.out.println("::Esperando conexion...");
                 Socket nuevaConexion = server.accept();
-                System.out.println("Conexion aceptada");
+                //System.out.println("Conexion aceptada");
                 // nuevo thread
                 ThreadControlador newThread = new ThreadControlador(nuevaConexion, this);
-                conexiones.add(newThread);
                 newThread.start();
-                System.out.println("run");
             }
         }
         catch(Exception e)

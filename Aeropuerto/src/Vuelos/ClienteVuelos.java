@@ -6,10 +6,9 @@
 package Vuelos;
 
 import ClasesCompartidas.*;
-import VentanaControlador.ThreadVentana;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+import static java.lang.Thread.sleep;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -21,69 +20,69 @@ import java.util.logging.Logger;
  */
 public class ClienteVuelos {
     public Socket socketRef;
-    public ObjectOutputStream writer;
-    public DataOutputStream writerUTF;
-    private JsonClass jsonObj;
-    public ThreadVuelos hilo;
+    public DataOutputStream writer;
     public ArrayList<Avion> aviones;
     public String nombre;
     int contador;
     
     public ClienteVuelos(){
-        contador = 0;
-        jsonObj = new JsonClass();
+        contador = Funciones.getRandom(3, 13);
         aviones = new ArrayList<Avion>();
         nombre = "Vuelos";
     }
     
     public void conectar(){
-        try{
+        enviarNombre();
+        for (int i = 0; i < contador; i++) {
+            enviarAviones(i);
+        }
+    }
+    
+    public void enviarNombre(){
+        try {
             socketRef = new Socket("localhost", 35578);
-            hilo = new ThreadVuelos(socketRef);
-            hilo.start();
-            hilo.escribir(Mensaje.ENVIONOMBRE);
-            hilo.escribirTexto(nombre);
-            System.out.println("Solicitud enviada");
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        
-        crearAviones();
-        enviarAviones();
-    }
-    
-    
-    public void escribir(Mensaje sms){
-        try {
-            writer.writeObject(sms);
+            writer = new DataOutputStream(socketRef.getOutputStream());
+            escribir("nombre");
+            escribir(nombre);
+            socketRef.close();
         } catch (IOException ex) {
             Logger.getLogger(ClienteVuelos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void escribirTexto(String texto){
+    public void enviarAviones(int i){
         try {
-            writerUTF.writeUTF(texto);
+            socketRef = new Socket("localhost", 35578);
+            writer = new DataOutputStream(socketRef.getOutputStream());
+            
+            escribir("avion");
+            String avion = crearAvion(i);
+            
+            escribir(avion);
+            //System.out.println("Avion " + i +" enviado");
+            socketRef.close();
+            sleep(2000);
         } catch (IOException ex) {
             Logger.getLogger(ClienteVuelos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-    
-    
-    public void crearAviones(){
-        int n = Funciones.getRandom(3, 10);
-        for (int i = 0; i < n; i++) {
-            Avion avion = new Avion(i);
-            avion.doRandom();
-            aviones.add(avion);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ClienteVuelos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void enviarAviones(){
-        JsonClass.writeJson(aviones, "prueba");
-        escribir(Mensaje.CREACIONAVIONES);
-        System.out.println("Enviado");
+    public void escribir(String texto){
+        try {
+            writer.writeUTF(texto);
+            writer.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteVuelos.class.getName()).log(Level.SEVERE, null, ex);
+        }   
     }
+    
+    public String crearAvion(int i){
+        Avion avion = new Avion(i);
+        avion.doRandom();
+        //hacer el el avion string
+        return i+"";
+    }
+    
 }
