@@ -13,8 +13,8 @@ public class Avion {
     public int codigo;
     public String tamano;
     public boolean aTiempo;
-    public int pista;
-    public int puerta;
+    public int pista = -1;
+    public int puerta = -1;
     public String estado;
     public int tiempo = 10;
     

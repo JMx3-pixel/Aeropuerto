@@ -25,7 +25,7 @@ public class PantallaControlador extends javax.swing.JFrame {
         cliente.conectar();
         initComponents();
         setItems();
-
+        actualizar();
         aviones = JsonClass.readJson("aviones");
     }
     
@@ -47,19 +47,26 @@ public class PantallaControlador extends javax.swing.JFrame {
     }
     
     void actualizar(){
-        txfAprox.setText("");
-        txfPista.setText("");
+        cmbAprox.removeAllItems();
+        cmbEnPista.removeAllItems();
+        Avion a1 = new Avion(1, "Carga", "Carga", true);
+        Avion a2 = new Avion(2, "Pasajeros", "Pasajeros", true);
+        aviones.add(a1);
+        aviones.add(a2);
         for (int i = 0; i < aviones.size(); i++) {
             Avion avion = aviones.get(i);
-            if(avion.pista == -1 && avion.pista == -1){
-                txfAprox.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + "aproximándose en " + avion.tiempo +".");
+            if(avion.tiempo > 0 && avion.puerta == -1){
+                cmbAprox.addItem("Avión número "+ avion.codigo + ", de "+ avion.tamano + " aproximándose en " + avion.tiempo +".");
+                
             }
-            if(avion.puerta == -1 && avion.pista != -1){
-                txfPista.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + "esperando puerta.");
+            if(avion.tiempo == 0 && avion.pista == -1 && avion.puerta == -1){
+                cmbAprox.addItem("Avión número "+ avion.codigo + ", de "+ avion.tamano + "esperando pista.");
             }
-            if(avion.puerta != -1 && avion.pista == -1){
-                txfPista.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + "haciendo taxi a la puerta " + avion.puerta +".");
+            if(avion.tiempo > 0 && avion.pista != -1 && avion.puerta == -1 ){
+                cmbEnPista.addItem("Avión número "+ avion.codigo + ", de "+ avion.tamano + "haciendo taxi a la puerta " + avion.puerta +".");
             }
+            if(avion.tiempo == 0 && avion.pista != -1 && avion.puerta != -1)
+                cmbEnPista.addItem("Avión número "+ avion.codigo + ", de "+ avion.tamano + "llegando en " + avion.tiempo + "segundos a la puerta " + avion.puerta +".");
         }
     }
     /**
@@ -72,27 +79,21 @@ public class PantallaControlador extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txfAprox = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         cmbPuerta = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        txfBit = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txfPista = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         cmbPista = new javax.swing.JComboBox<>();
         botonPuerta = new javax.swing.JButton();
         botonPista = new javax.swing.JButton();
+        cmbAprox = new javax.swing.JComboBox<>();
+        cmbEnPista = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        txfAprox.setColumns(20);
-        txfAprox.setRows(5);
-        jScrollPane2.setViewportView(txfAprox);
 
         jLabel1.setText("Aviones aproximándose");
 
@@ -104,15 +105,11 @@ public class PantallaControlador extends javax.swing.JFrame {
 
         jLabel2.setText("Pista a asignar");
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane1.setViewportView(jTextArea2);
+        txfBit.setColumns(20);
+        txfBit.setRows(5);
+        jScrollPane1.setViewportView(txfBit);
 
         jLabel3.setText("Bitácora");
-
-        txfPista.setColumns(20);
-        txfPista.setRows(5);
-        jScrollPane3.setViewportView(txfPista);
 
         jLabel4.setText("Aviones en pista");
 
@@ -138,75 +135,100 @@ public class PantallaControlador extends javax.swing.JFrame {
             }
         });
 
+        cmbAprox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbAproxActionPerformed(evt);
+            }
+        });
+
+        cmbEnPista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbEnPistaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(131, 131, 131)
-                        .addComponent(jLabel3)
-                        .addGap(131, 131, 131))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(40, 40, 40))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(botonPuerta)
-                                .addGap(95, 95, 95))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(72, 72, 72)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(cmbPuerta, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbPista, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(74, 74, 74))
+                                    .addComponent(jLabel1)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(cmbPista, javax.swing.GroupLayout.Alignment.TRAILING, 0, 136, Short.MAX_VALUE)
+                                        .addComponent(cmbAprox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel2)
+                                .addGap(28, 28, 28)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(66, 66, 66)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(botonPista)
-                                    .addComponent(jLabel5))
-                                .addGap(93, 93, 93)))))
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(79, Short.MAX_VALUE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(62, 62, 62)
+                                        .addComponent(cmbPuerta, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                                        .addComponent(jLabel5)
+                                        .addGap(24, 24, 24))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel4)
+                                .addGap(28, 28, 28))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(84, 84, 84)
+                        .addComponent(botonPista)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonPuerta)
+                        .addGap(12, 12, 12))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmbEnPista, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(92, 92, 92))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(jLabel1)
-                .addGap(131, 131, 131)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(116, 116, 116))
+                .addGap(359, 359, 359)
+                .addComponent(jLabel3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cmbPista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11)
-                        .addComponent(botonPista)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel5)
+                        .addGap(63, 63, 63)
+                        .addComponent(jLabel1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel4)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbAprox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbEnPista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addGap(33, 33, 33)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbPuerta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(botonPuerta)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(128, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbPuerta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbPista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonPista)
+                    .addComponent(botonPuerta))
+                .addContainerGap(215, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -238,6 +260,14 @@ public class PantallaControlador extends javax.swing.JFrame {
     private void botonPistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPistaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_botonPistaActionPerformed
+
+    private void cmbAproxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAproxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbAproxActionPerformed
+
+    private void cmbEnPistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEnPistaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbEnPistaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -278,6 +308,8 @@ public class PantallaControlador extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonPista;
     private javax.swing.JButton botonPuerta;
+    private javax.swing.JComboBox<String> cmbAprox;
+    private javax.swing.JComboBox<String> cmbEnPista;
     private javax.swing.JComboBox<String> cmbPista;
     private javax.swing.JComboBox<String> cmbPuerta;
     private javax.swing.JLabel jLabel1;
@@ -287,10 +319,6 @@ public class PantallaControlador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextArea txfAprox;
-    private javax.swing.JTextArea txfPista;
+    private javax.swing.JTextArea txfBit;
     // End of variables declaration//GEN-END:variables
 }
