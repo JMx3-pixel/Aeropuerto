@@ -10,10 +10,10 @@ package ClasesCompartidas;
  * @author Jean Paul
  */
 public class Puerta {
-    public int num;
+    public String tamano;
     public boolean disponible;
-    public Puerta(int num){
-        this.num = num;
+    public Puerta(String tamano){
+        this.tamano = tamano;
         disponible = true;   
     }
     

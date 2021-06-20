@@ -1,5 +1,6 @@
 [
-        {"tamano" : 1, "tipo" : 0 , "aTiempo" : "true"}, 
-        {"tamano" : 2, "tipo" : 1 , "aTiempo" : "true"} 
+        {"codigo" : 1, "tamano" : "Carga","aTiempo" : "true"}, 
+        {"tamano" : 2, "tamano" : "Pasajeros", "aTiempo" : "true"} 
+       
 ]
     

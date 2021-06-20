@@ -55,7 +55,7 @@ public class JsonClass {
             return gson.toJson(a);
         }
         
-        public static String ArrayString(ArrayList<Avion> a){
+        public static String arrayString(ArrayList<Avion> a){
             Object [] array = a.toArray();
             return gson.toJson(array);
         }

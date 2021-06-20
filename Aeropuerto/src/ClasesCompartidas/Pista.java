@@ -11,9 +11,10 @@ package ClasesCompartidas;
  */
 public class Pista {
     public boolean disponible;
-    public String tipo;
-    public Pista(String tipo){
-        this.tipo = tipo;
+    public String tamano;
+    public Pista(String tamano){
+        this.tamano = tamano;
+        this.disponible = true;
     }
     
 }

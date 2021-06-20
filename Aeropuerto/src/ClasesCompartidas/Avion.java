@@ -25,7 +25,7 @@ public class Avion {
         this.estado = "llegando";
     }
     
-    public Avion(int codigo, String tamano, String tipo, boolean atiempo){
+    public Avion(int codigo, String tamano, boolean atiempo){
         this.codigo = codigo;
         this.tamano = tamano;
         this.aTiempo = atiempo;
