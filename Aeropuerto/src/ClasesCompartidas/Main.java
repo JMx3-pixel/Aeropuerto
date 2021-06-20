@@ -17,13 +17,16 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JsonClass json = new JsonClass();
+        
         Avion avion = new Avion(0, "s", "d", true);
         Avion avionb = new Avion(1, "b", "c", true);
         ArrayList<Avion> aviones = new ArrayList<Avion>();
         aviones.add(avion);
         aviones.add(avionb);
-        json.writeJson(aviones, "prueba");
+        JsonClass.writeJson(aviones, "prueba");
+        String a;
+        a = JsonClass.avionString(aviones);
+        System.out.println(a);
     }
 
 }

@@ -17,13 +17,12 @@ import java.util.Arrays;
 public class JsonClass { 
 
         public ArrayList<String> datos;
-
+        public static Gson gson = new Gson();
     public JsonClass() {
         this.datos = new ArrayList<String>();
     }
     
         public static ArrayList<Avion> readJson(String direccion){
-            Gson gson = new Gson();
             ArrayList<Avion> arreglo = new ArrayList();
             try (Reader reader = new FileReader("src\\ClasesCompartidas\\"+ direccion +".json")) {
                 
@@ -50,5 +49,30 @@ public class JsonClass {
             catch (IOException e) {
                 System.out.println("Error al leer el json");
             }
+        }
+
+        public static String avionString(Avion a){
+            return gson.toJson(a);
+        }
+        
+        public static String ArrayString(ArrayList<Avion> a){
+            Object [] array = a.toArray();
+            return gson.toJson(array);
+        }
+        
+        
+        public static Avion fromString(String s){
+            Avion a = gson.fromJson(s, Avion.class);
+            return a;
+        }
+        
+        public static ArrayList<Avion> arrayFromString(Avion a, String s){
+            ArrayList<Avion> arreglo = new ArrayList();
+            
+            Avion[] arregloAvion = gson.fromJson(s, Avion[].class);
+                
+            arreglo.addAll(Arrays.asList(arregloAvion)); 
+            
+            return arreglo;
         }
 }
