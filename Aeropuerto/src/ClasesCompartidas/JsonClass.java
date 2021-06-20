@@ -50,6 +50,8 @@ public class JsonClass {
                 System.out.println("Error al leer el json");
             }
         }
+        
+        
 
         public static String avionString(Avion a){
             return gson.toJson(a);
@@ -66,7 +68,7 @@ public class JsonClass {
             return a;
         }
         
-        public static ArrayList<Avion> arrayFromString(Avion a, String s){
+        public static ArrayList<Avion> arrayFromString(String s){
             ArrayList<Avion> arreglo = new ArrayList();
             
             Avion[] arregloAvion = gson.fromJson(s, Avion[].class);
@@ -75,4 +77,5 @@ public class JsonClass {
             
             return arreglo;
         }
+
 }

@@ -8,9 +8,7 @@ package Vuelos;
 import ClasesCompartidas.*;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import static java.lang.Thread.sleep;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,32 +19,17 @@ import java.util.logging.Logger;
 public class ClienteVuelos {
     public Socket socketRef;
     public DataOutputStream writer;
-    public ArrayList<Avion> aviones;
     public String nombre;
     int contador;
     
     public ClienteVuelos(){
         contador = Funciones.getRandom(3, 13);
-        aviones = new ArrayList<Avion>();
         nombre = "Vuelos";
     }
     
     public void conectar(){
-        enviarNombre();
         for (int i = 0; i < contador; i++) {
             enviarAviones(i);
-        }
-    }
-    
-    public void enviarNombre(){
-        try {
-            socketRef = new Socket("localhost", 35578);
-            writer = new DataOutputStream(socketRef.getOutputStream());
-            escribir("nombre");
-            escribir(nombre);
-            socketRef.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ClienteVuelos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -54,19 +37,14 @@ public class ClienteVuelos {
         try {
             socketRef = new Socket("localhost", 35578);
             writer = new DataOutputStream(socketRef.getOutputStream());
-            
             escribir("avion");
             String avion = crearAvion(i);
-            
             escribir(avion);
             //System.out.println("Avion " + i +" enviado");
             socketRef.close();
-            sleep(2000);
         } catch (IOException ex) {
             Logger.getLogger(ClienteVuelos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ClienteVuelos.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
     }
     
     public void escribir(String texto){
@@ -81,8 +59,8 @@ public class ClienteVuelos {
     public String crearAvion(int i){
         Avion avion = new Avion(i);
         avion.doRandom();
-        //hacer el el avion string
-        return i+"";
+        JsonClass.avionString(avion);
+        return JsonClass.avionString(avion);
     }
     
 }

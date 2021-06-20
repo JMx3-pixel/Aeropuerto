@@ -15,21 +15,24 @@ import java.util.ArrayList;
  */
 
 public class PantallaControlador extends javax.swing.JFrame {
-    ClienteInformacion cliente;
+    ClienteVentana cliente;
+     
     /**
      * Creates new form PantallaVuelos
      */
-    ArrayList<Avion> aviones = new ArrayList<Avion>();
+   
     public PantallaControlador() {
-        cliente = new ClienteInformacion();
+        cliente = new ClienteVentana();
         cliente.conectar();
         initComponents();
-        Avion a1 = new Avion(1, "Carga", true);
-        Avion a2 = new Avion(2, "Pasajeros", true);
-        aviones.add(a1);
-        aviones.add(a2);
+        
+        //Avion a1 = new Avion(1, "Carga", true);
+        //Avion a2 = new Avion(2, "Pasajeros", true);
+        //aviones.add(a1);
+        //aviones.add(a2);
         setItems();
         actualizar();
+      
         
         //aviones = JsonClass.readJson("aviones");
     }
@@ -57,10 +60,10 @@ public class PantallaControlador extends javax.swing.JFrame {
     void asignarPista(int codigo, String pista){
         Avion avion = null;
         System.out.println("" + pista);
-        for (int i = 0; i < aviones.size(); i++) {
-            System.out.println(""+ aviones.get(i).tamano);
-            if(aviones.get(i).codigo == codigo){
-                avion = aviones.get(i);
+        for (int i = 0; i < cliente.aviones.size(); i++) {
+            System.out.println(""+ cliente.aviones.get(i).tamano);
+            if(cliente.aviones.get(i).codigo == codigo){
+                avion = cliente.aviones.get(i);
                 break;
             }
             
@@ -113,9 +116,9 @@ public class PantallaControlador extends javax.swing.JFrame {
     
     void asignarPuerta(int codigo, String puerta){
         Avion avion = null;
-        for (int i = 0; i < aviones.size(); i++) {
-            if(aviones.get(i).codigo == codigo){
-                avion = aviones.get(i);
+        for (int i = 0; i < cliente.aviones.size(); i++) {
+            if(cliente.aviones.get(i).codigo == codigo){
+                avion = cliente.aviones.get(i);
                 break;
             }
             
@@ -169,8 +172,8 @@ public class PantallaControlador extends javax.swing.JFrame {
         cmbEnPista.removeAllItems();
         txfAprox.setText("");
         txfPista.setText("");
-        for (int i = 0; i < aviones.size(); i++) {
-            Avion avion = aviones.get(i);
+        for (int i = 0; i < cliente.aviones.size(); i++) {
+            Avion avion = cliente.aviones.get(i);
             if(avion.tiempo > 0 && avion.puerta == -1){
                 txfAprox.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " aproximándose en " + avion.tiempo +".\n");
                 cmbAprox.addItem("" + avion.codigo);
@@ -408,6 +411,7 @@ public class PantallaControlador extends javax.swing.JFrame {
 
     private void botonPistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPistaActionPerformed
         asignarPista(Integer.parseInt(cmbAprox.getSelectedItem().toString()), cmbPista.getSelectedItem().toString() );
+        cliente.enviarAviones();
     }//GEN-LAST:event_botonPistaActionPerformed
 
     private void cmbAproxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAproxActionPerformed

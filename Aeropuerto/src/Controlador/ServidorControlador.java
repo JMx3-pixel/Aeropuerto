@@ -17,14 +17,16 @@ import java.util.ArrayList;
 public class ServidorControlador extends Thread{
     private ServerSocket server;
     private boolean running = true;
-    public ArrayList<String> avionesString;
+    public String avionesString;
+    public ArrayList<Avion> aviones;
     public ArrayList<Puerta> listaPuerta;
     public ArrayList<Avion> listaPendientes;
     public ArrayList<Pista> listaPuertas;
     
 
     public ServidorControlador() {
-        this.avionesString = new ArrayList<String>();
+        this.aviones = new ArrayList<Avion>();
+        this.avionesString = "";
     }
     
     public void stopserver(){
@@ -41,7 +43,7 @@ public class ServidorControlador extends Thread{
                 //System.out.println("Conexion aceptada");
                 // nuevo thread
                 ThreadControlador newThread = new ThreadControlador(nuevaConexion, this);
-                newThread.start();
+                newThread.run();
             }
         }
         catch(Exception e)

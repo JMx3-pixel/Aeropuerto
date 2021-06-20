@@ -13,30 +13,27 @@ import ClasesCompartidas.Avion;
  */
 public class PantallaInformacion extends javax.swing.JFrame {
 
-    public ClienteInformacion cliente;
     /**
      * Creates new form PantallaInformacion
      */
     public PantallaInformacion(){
-        cliente = new ClienteInformacion();
-        //cliente.conectar();
-        
         initComponents();
-        setInformacion();
     }
     
-    public void setInformacion(){
-        for (int i = 0; i < 10; i++) {
-            Avion avion = new Avion(i);
-            avion.doRandom();
-            cliente.aviones.add(avion);
-        }
+    public void setInformacion(ClienteInformacion cliente){
         
         txfInformacion.setText("Vuelo\tEstado actual\tPista\tPuerta\n");
                 
         for (int i = 0; i < cliente.aviones.size(); i++) {
             Avion avion = cliente.aviones.get(i);
-            txfInformacion.append("\n"+avion.codigo +"\t"+ avion.estado +"\t"+ avion.pista +"\t"+ avion.puerta);
+            String pista = avion.pista+"";
+            String puerta = avion.puerta+"";
+            
+            if(pista == "-1")
+                pista = "N/A";
+            if(puerta == "-1")
+                puerta = "N/A";
+            txfInformacion.append("\n"+avion.codigo +"\t"+ avion.estado +"\t"+ pista +"\t"+ puerta);
         }
     }
 

@@ -6,41 +6,64 @@
 package VentanaInformacion;
 
 import ClasesCompartidas.*;
+import Vuelos.ClienteVuelos;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Jean Paul
  */
-public class ClienteInformacion {
+public class ClienteInformacion extends Thread{
     public Socket socketRef;
     public DataOutputStream writer;
     public DataInputStream reader;
     public ArrayList<Avion> aviones;
     public String nombre;
+    public String avionesString;
+    public boolean running;
+    public PantallaInformacion pantalla;
     
     public ClienteInformacion(){
+        pantalla = new PantallaInformacion();
         aviones = new ArrayList<Avion>();
         nombre = "VentanaInformacion";
+        running = true;
+        pantalla.setVisible(true);
     }
     
-    public void conectar(){
-        try{
-            socketRef = new Socket("localhost", 35578);
-            writer = new DataOutputStream(socketRef.getOutputStream());
-            reader = new DataInputStream(socketRef.getInputStream());
-            System.out.println("Solicitud enviada");
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage());
+    @Override
+    public void run(){
+        while(running){
+            try{
+                socketRef = new Socket("localhost", 35578);
+                writer = new DataOutputStream(socketRef.getOutputStream());
+                reader = new DataInputStream(socketRef.getInputStream());
+                escribir("consulta");
+                avionesString = reader.readUTF();
+                aviones = JsonClass.arrayFromString(avionesString);
+                sleep(500);
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());     
+            }
+            
+            pantalla.setInformacion(this);
         }
     }
     
     
-    public void leerInformacion(){
-        aviones = JsonClass.readJson("aviones");
+    public void escribir(String texto){
+        try {
+            writer.writeUTF(texto);
+            writer.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteVuelos.class.getName()).log(Level.SEVERE, null, ex);
+        }   
     }
 }

@@ -5,6 +5,8 @@
  */
 package Controlador;
 
+import ClasesCompartidas.Avion;
+import ClasesCompartidas.JsonClass;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -38,15 +40,25 @@ public class ThreadControlador extends Thread{
             try {
                 instruccionId = reader.readUTF(); // esperar hasta que reciba un string
                 switch (instruccionId){
-                    case "nombre":
-                        nombre = reader.readUTF();
-                        System.out.println("nombre: " + nombre);
-                        break;
                     case "avion":
                         String avion = reader.readUTF();
-                        server.avionesString.add(avion);
-                        System.out.println("avion " +avion+ " recibido");
-                        
+                        Avion actual = JsonClass.fromString(avion);
+                        server.aviones.add(actual);
+                        System.out.println("avion " + actual.codigo + " recibido");
+                        break;
+                    case "VentanaControlador":
+                        System.out.println("enviando aviones");
+                        String array = JsonClass.arrayString(server.aviones);
+                        escribir(array);
+                        break;
+                    case "reenvio":
+                        System.out.println("aviones modificados");
+                        server.avionesString = reader.readUTF();
+                        break;
+                    case "consulta":
+                        escribir(server.avionesString);
+                        System.out.println("aviones enviados a informacion");
+                        break;
                     default:
                         break;
                 }
@@ -67,7 +79,4 @@ public class ThreadControlador extends Thread{
         }
     }
     
-    public void enviarAvion(){
-          
-    }
 }
