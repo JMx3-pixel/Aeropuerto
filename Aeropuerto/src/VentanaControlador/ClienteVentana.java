@@ -90,6 +90,7 @@ public class ClienteVentana extends Thread{
                     else
                         this.aviones.get(i).aterrizado = true;
                     refPantalla.actualizar();
+                    enviarAviones();
                 }
             }
             catch(InterruptedException e){

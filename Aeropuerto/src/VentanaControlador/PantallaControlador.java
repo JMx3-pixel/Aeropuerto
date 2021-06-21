@@ -218,19 +218,18 @@ public class PantallaControlador extends javax.swing.JFrame {
             Avion avion = cliente.aviones.get(i);
             if(avion.tiempo > 0 && !avion.aterrizado){
                 txfAprox.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " aproximándose en " + avion.tiempo +".\n");
-                
             }
             if(avion.aterrizado && avion.pista == -1 && avion.puerta == -1){
                 txfAprox.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " esperando pista.\n");
-             
+                avion.estado = "Aterrizado";
             }
             if(avion.aterrizado && avion.puerta == -1 && avion.pista != -1 ){
                 txfPista.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " esperando puerta.\n");
-             
+                avion.estado = "En pista";
             }
             if(avion.tiempo > 0 && avion.pista == -1 && avion.puerta != -1){
                 txfPista.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " llegando en " + avion.tiempo + " segundos a la puerta " + avion.puerta +".\n");
-               
+               avion.estado = "En taxi";
             }
             if(avion.tiempo == 0 && avion.pista == -1 && avion.puerta != -1){
                 txfBit.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " desembarcó en puerta " + avion.puerta + " y está siendo guardado en un hangar.\n");
