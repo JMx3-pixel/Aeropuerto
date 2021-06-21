@@ -32,6 +32,7 @@ public class ClienteInformacion extends Thread{
         pantalla = new PantallaInformacion();
         aviones = new ArrayList<Avion>();
         running = true;
+        pantalla.setTitle("Pantalla de información");
         pantalla.setVisible(true);
     }
     
@@ -48,7 +49,7 @@ public class ClienteInformacion extends Thread{
                 sleep(500);
             }
             catch(Exception e){
-                System.out.println(e.getMessage());     
+                //System.out.println(e.getMessage());     
             }
             
             pantalla.setInformacion(this);

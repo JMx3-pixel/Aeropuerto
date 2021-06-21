@@ -60,7 +60,7 @@ public class ThreadControlador extends Thread{
             } catch (IOException ex) {
                 Logger.getLogger(ThreadControlador.class.getName()).log(Level.SEVERE, null, ex);
             } catch(Exception e){
-                System.out.println("error error");
+                //System.out.println("error error");
             }
     }
     

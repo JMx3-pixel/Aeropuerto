@@ -22,7 +22,7 @@ public class ClienteVuelos {
     public int contador;
     
     public ClienteVuelos(){
-        contador = Funciones.getRandom(3, 13);
+        contador = Funciones.getRandom(3, 9);
     }
     
     public void conectar(){

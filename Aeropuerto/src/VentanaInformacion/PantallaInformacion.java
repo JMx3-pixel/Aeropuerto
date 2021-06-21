@@ -22,19 +22,23 @@ public class PantallaInformacion extends javax.swing.JFrame {
     
     public void setInformacion(ClienteInformacion cliente){
         
-        txfInformacion.setText("Vuelo\tEstado actual\tPista\tPuerta\n");
+        txfInformacion.setText("Vuelo\tTipo\tEstado actual\tPista\tPuerta\t Tiempo restante\n");
                 
         for (int i = 0; i < cliente.aviones.size(); i++) {
             Avion avion = cliente.aviones.get(i);
             String pista = avion.pista+"";
             String puerta = avion.puerta+"";
             
-            if(avion.pista == -1)
+            if(avion.pista == -1 )
                 pista = "N/A";
+            if(avion.pista == -2){
+                pista = "N/A";
+                
+            }
             if(avion.puerta == -1)
                 puerta = "N/A";
             
-            txfInformacion.append("\n"+avion.codigo +"\t"+ avion.estado +"\t"+ pista +"\t"+ puerta);
+            txfInformacion.append("\n"+avion.codigo +"\t" + avion.tamano +"\t"+ avion.estado +"\t"+ pista +"\t"+ puerta + "\t              " + avion.tiempo);
         }
     }
     
@@ -73,12 +77,12 @@ public class PantallaInformacion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(106, 106, 106)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(285, 285, 285)
-                        .addComponent(jLabel1)))
-                .addContainerGap(110, Short.MAX_VALUE))
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

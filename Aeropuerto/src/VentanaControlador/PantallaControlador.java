@@ -22,7 +22,6 @@ public class PantallaControlador extends javax.swing.JFrame {
    
     public PantallaControlador() {
         initComponents();
-       
         
         //Avion a1 = new Avion(1, "Carga", true);
         //Avion a2 = new Avion(2, "Pasajeros", true);
@@ -217,6 +216,10 @@ public class PantallaControlador extends javax.swing.JFrame {
             Avion avion = cliente.aviones.get(i);
             if(avion.tiempo > 0 && !avion.aterrizado){
                 txfAprox.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " aproximándose en " + avion.tiempo +".\n");
+                if (!avion.aTiempo)
+                    avion.estado = "Con retraso";
+                else
+                    avion.estado = "Aproximando";
             }
             if(avion.aterrizado && avion.pista == -1 && avion.puerta == -1){
                 txfAprox.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " esperando pista.\n");
@@ -233,13 +236,13 @@ public class PantallaControlador extends javax.swing.JFrame {
             if(avion.tiempo == 0 && avion.pista == -1 && avion.puerta != -1){
                 avion.tiempo = 5;
                 avion.pista = -2;
-                System.out.println("asu");
             }
             if(avion.tiempo > 0 && avion.pista == -2){
                 txfPista.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " desembarcando en puerta " + avion.puerta + ", " + avion.tiempo + " segundos para terminar.\n");
                 //cliente.aviones.remove(avion);
-                avion.estado = "Desembarcando";
+                avion.estado = "Desembarque";
                 actualizarCmb();
+                cliente.enviarAviones();
             }
             if(avion.tiempo == 0 && avion.pista == -2 && avion.puerta != -1){
                 txfBit.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " desembarcó en puerta " + avion.puerta + " y está siendo guardado en un hangar.\n");
@@ -489,9 +492,14 @@ public class PantallaControlador extends javax.swing.JFrame {
     }//GEN-LAST:event_botonPuertaActionPerformed
 
     private void botonPistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPistaActionPerformed
-        asignarPista(Integer.parseInt(cmbAprox.getSelectedItem().toString()), cmbPista.getSelectedItem().toString() );
-        cliente.enviarAviones();
-        setItems();
+        try{
+            asignarPista(Integer.parseInt(cmbAprox.getSelectedItem().toString()), cmbPista.getSelectedItem().toString() );
+            cliente.enviarAviones();
+            setItems();
+        }
+         catch(Exception e){
+            txfBit.append("No hay aviones para seleccionar.\n");
+        }
     }//GEN-LAST:event_botonPistaActionPerformed
 
     private void cmbAproxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAproxActionPerformed

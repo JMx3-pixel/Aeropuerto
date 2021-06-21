@@ -54,15 +54,15 @@ public class Avion {
     }
     
     public boolean tiempoAleatorio(){
-        int n = Funciones.getRandom(0, 1);
-        return n == 0;
+        int n = Funciones.getRandom(0, 3);
+        return n > 0;
     }
     
     public void doRandom(int i){
         this.aTiempo = tiempoAleatorio();
         this.tamano = tamanoAleatorio();
-        this.tiempo = Funciones.getRandom(10 + i, 20 + i);
+        this.tiempo = Funciones.getRandom(10 + (i * 3 + 1 ), 25 + (i * 3));
         if(!aTiempo)
-            tiempo += 10;
+            tiempo += 10 + i;
     }
 }

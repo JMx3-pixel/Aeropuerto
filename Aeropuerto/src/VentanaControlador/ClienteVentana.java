@@ -37,7 +37,7 @@ public class ClienteVentana extends Thread{
         nombre = "VentanaControlador";
         running = true;
         refPantalla = new PantallaControlador();
-        
+        refPantalla.setTitle("Ventana Controlador");
         refPantalla.cliente = this;
         refPantalla.setVisible(true);
     }
@@ -55,7 +55,7 @@ public class ClienteVentana extends Thread{
                 socketRef.close();
             }
             catch(Exception e){
-                System.out.println(e.getMessage());
+                //System.out.println(e.getMessage());
             }
         copiarAviones();
     }
@@ -80,9 +80,11 @@ public class ClienteVentana extends Thread{
         while(running){
             refPantalla.actualizar();
             try{
+                refPantalla.actualizar();
                 Thread.sleep(1000);
+                refPantalla.actualizar();
                 for (int i = 0; i < this.aviones.size(); i++) {
-                
+                    enviarAviones();
                     if(this.aviones.get(i).tiempo > 0)
                         this.aviones.get(i).tiempo --;
                     else
@@ -109,7 +111,7 @@ public class ClienteVentana extends Thread{
             socketRef.close();
         }
         catch(Exception e){
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
     }
     
