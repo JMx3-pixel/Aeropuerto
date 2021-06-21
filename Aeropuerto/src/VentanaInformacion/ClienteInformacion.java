@@ -24,7 +24,6 @@ public class ClienteInformacion extends Thread{
     public DataOutputStream writer;
     public DataInputStream reader;
     public ArrayList<Avion> aviones;
-    public String nombre;
     public String avionesString;
     public boolean running;
     public PantallaInformacion pantalla;
@@ -32,7 +31,6 @@ public class ClienteInformacion extends Thread{
     public ClienteInformacion(){
         pantalla = new PantallaInformacion();
         aviones = new ArrayList<Avion>();
-        nombre = "VentanaInformacion";
         running = true;
         pantalla.setVisible(true);
     }

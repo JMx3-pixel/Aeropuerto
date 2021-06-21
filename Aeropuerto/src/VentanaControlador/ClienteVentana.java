@@ -28,7 +28,6 @@ public class ClienteVentana extends Thread{
     public ArrayList<Avion> aviones;
     public ArrayList<Avion> avionesPrevios;
     public String nombre;
-    public String leido;
     public boolean running;
     public PantallaControlador refPantalla;
     
@@ -36,7 +35,6 @@ public class ClienteVentana extends Thread{
         aviones = new ArrayList<Avion>();
         avionesPrevios = new ArrayList<Avion>();
         nombre = "VentanaControlador";
-        leido = "vacio";
         running = true;
         refPantalla = new PantallaControlador();
         

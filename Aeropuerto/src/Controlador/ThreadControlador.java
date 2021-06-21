@@ -37,7 +37,7 @@ public class ThreadControlador extends Thread{
                     case "avion":
                         String avion = reader.readUTF();
                         Avion actual = JsonClass.fromString(avion);
-                        server.aviones.add(actual);
+                         server.aviones.add(actual);
                         System.out.println("avion " + actual.codigo + " recibido");
                         break;
                     case "VentanaControlador":
