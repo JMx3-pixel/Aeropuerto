@@ -233,7 +233,7 @@ public class PantallaControlador extends javax.swing.JFrame {
             }
             if(avion.tiempo == 0 && avion.pista == -1 && avion.puerta != -1){
                 txfBit.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " desembarcó en puerta " + avion.puerta + " y está siendo guardado en un hangar.\n");
-                cliente.avionesPrevios.add(avion);
+                //cliente.avionesPrevios.add(avion);
                 cliente.aviones.remove(avion);
                 avion.refPuerta.disponible = true;
                 actualizarCmb();

@@ -5,11 +5,8 @@
  */
 package Controlador;
 
-import ClasesCompartidas.Avion;
-import ClasesCompartidas.JsonClass;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import ClasesCompartidas.*;
+import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,18 +17,15 @@ import java.util.logging.Logger;
  */
 public class ThreadControlador extends Thread{
     private Socket socketRef;
-    private boolean running = true;
     public DataOutputStream writer;
     public DataInputStream reader;
     public ServidorControlador server;
-    public String nombre;
     
     public ThreadControlador(Socket socketRef, ServidorControlador server) throws IOException {
         this.socketRef = socketRef;
         this.writer = new DataOutputStream(socketRef.getOutputStream());
         this.reader = new DataInputStream(socketRef.getInputStream());
         this.server = server;
-        nombre = "";
     }
     
     @Override
@@ -57,7 +51,7 @@ public class ThreadControlador extends Thread{
                         break;
                     case "consulta":
                         escribir(server.avionesString);
-                        System.out.println("aviones enviados a informacion");
+                        //System.out.println("aviones enviados a informacion");
                         break;
                     default:
                         break;

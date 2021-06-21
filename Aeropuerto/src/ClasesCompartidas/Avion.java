@@ -17,7 +17,7 @@ public class Avion {
     public int puerta = -1;
     public Puerta refPuerta;
     public String estado;
-    public int tiempo = 10;
+    public int tiempo;
     public boolean aterrizado = false;
     
     public Avion(int codigo){
@@ -70,11 +70,11 @@ public class Avion {
         return n == 0;
     }
     
-    public void doRandom(){
+    public void doRandom(int i){
         this.aTiempo = tiempoAleatorio();
         this.tamano = tamanoAleatorio();
-        //this.tipo = tipoAleatorio();
+        this.tiempo = i*2+2;
+        if(!aTiempo)
+            tiempo += 10;
     }
-    
-    
 }

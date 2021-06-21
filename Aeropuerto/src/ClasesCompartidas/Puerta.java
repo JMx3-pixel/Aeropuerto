@@ -12,6 +12,7 @@ package ClasesCompartidas;
 public class Puerta {
     public String tamano;
     public boolean disponible;
+    
     public Puerta(String tamano){
         this.tamano = tamano;
         disponible = true;   

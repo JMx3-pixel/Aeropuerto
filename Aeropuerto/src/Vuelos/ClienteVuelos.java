@@ -58,7 +58,7 @@ public class ClienteVuelos {
     
     public String crearAvion(int i){
         Avion avion = new Avion(i);
-        avion.doRandom();
+        avion.doRandom(i);
         JsonClass.avionString(avion);
         return JsonClass.avionString(avion);
     }

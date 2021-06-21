@@ -38,9 +38,10 @@ public class ClienteVentana extends Thread{
         nombre = "VentanaControlador";
         leido = "vacio";
         running = true;
+        refPantalla = new PantallaControlador();
         
-        
-        
+        refPantalla.cliente = this;
+        refPantalla.setVisible(true);
     }
     
     public void conectar(){
@@ -53,18 +54,19 @@ public class ClienteVentana extends Thread{
                 //sleep(1000);
                 avionesPrevios = JsonClass.arrayFromString(reader.readUTF());
                 System.out.println(avionesPrevios.size() + " aviones recibidos");
-                copiarAviones();
                 socketRef.close();
             }
             catch(Exception e){
                 System.out.println(e.getMessage());
             }
-        
+        copiarAviones();
     }
     
     public void copiarAviones(){
         for (int i = 0; i < avionesPrevios.size(); i++) {
             aviones.add(avionesPrevios.get(i));
+            refPantalla.setItems();
+            refPantalla.actualizar();
             try {
                 sleep(3000);
             } catch (InterruptedException ex) {
@@ -74,9 +76,6 @@ public class ClienteVentana extends Thread{
     }
     @Override
     public void run(){
-        refPantalla = new PantallaControlador();
-        refPantalla.cliente = this;
-        refPantalla.setVisible(true);
         refPantalla.setItems();
         refPantalla.actualizar();
         refPantalla.actualizarCmb();

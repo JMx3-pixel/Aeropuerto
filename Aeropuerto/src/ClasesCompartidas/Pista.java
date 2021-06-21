@@ -12,6 +12,7 @@ package ClasesCompartidas;
 public class Pista {
     public boolean disponible;
     public String tamano;
+            
     public Pista(String tamano){
         this.tamano = tamano;
         this.disponible = true;

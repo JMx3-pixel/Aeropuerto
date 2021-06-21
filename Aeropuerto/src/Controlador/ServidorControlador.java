@@ -19,9 +19,7 @@ public class ServidorControlador extends Thread{
     private boolean running = true;
     public String avionesString;
     public ArrayList<Avion> aviones;
-    public ArrayList<Puerta> listaPuerta;
     public ArrayList<Avion> listaPendientes;
-    public ArrayList<Pista> listaPuertas;
     
 
     public ServidorControlador() {

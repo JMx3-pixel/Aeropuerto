@@ -6,7 +6,6 @@
 package ClasesCompartidas;
 
 import com.google.gson.Gson;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,12 +15,9 @@ import java.util.Arrays;
  */
 public class JsonClass { 
 
-        public ArrayList<String> datos;
         public static Gson gson = new Gson();
-    public JsonClass() {
-        this.datos = new ArrayList<String>();
-    }
     
+        /*
         public static ArrayList<Avion> readJson(String direccion){
             ArrayList<Avion> arreglo = new ArrayList();
             try (Reader reader = new FileReader("src\\ClasesCompartidas\\"+ direccion +".json")) {
@@ -50,7 +46,7 @@ public class JsonClass {
                 System.out.println("Error al leer el json");
             }
         }
-        
+        */
         
 
         public static String avionString(Avion a){
