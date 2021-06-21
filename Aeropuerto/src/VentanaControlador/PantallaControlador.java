@@ -5,9 +5,8 @@
  */
 package VentanaControlador;
 
-import VentanaInformacion.ClienteInformacion;
 import ClasesCompartidas.*;
-import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -22,17 +21,13 @@ public class PantallaControlador extends javax.swing.JFrame {
      */
    
     public PantallaControlador() {
-        cliente = new ClienteVentana();
-        cliente.conectar();
         initComponents();
+       
         
         //Avion a1 = new Avion(1, "Carga", true);
         //Avion a2 = new Avion(2, "Pasajeros", true);
         //aviones.add(a1);
         //aviones.add(a2);
-        setItems();
-        actualizar();
-      
         
         //aviones = JsonClass.readJson("aviones");
     }
@@ -52,9 +47,9 @@ public class PantallaControlador extends javax.swing.JFrame {
         this.cmbPista.addItem("Carga");
         this.cmbPista.addItem("Pasajeros");
         this.cmbPista.addItem("Privado");
-        this.cmbPuerta.addItem("" +puerta1.tamano);
-        this.cmbPuerta.addItem("" +puerta2.tamano);
-        this.cmbPuerta.addItem("" +puerta3.tamano);
+        this.cmbPuerta.addItem("Carga");
+        this.cmbPuerta.addItem("Pasajeros");
+        this.cmbPuerta.addItem("Privado");
     }
     
     void asignarPista(int codigo, String pista){
@@ -75,10 +70,12 @@ public class PantallaControlador extends javax.swing.JFrame {
             }
             switch(pista.toLowerCase()){
                 case "carga":
-                    System.out.println("" + pista1.disponible);
+                    System.out.println("" + avion.tamano);
                     if(avion.tamano.equals("Carga") && pista1.disponible){
                         txfBit.append("Avion "+ avion.codigo + " asignado a pista de carga.\n");
                         pista1.disponible = false;
+                        avion.pista = 1;
+                        actualizarCmb();
                         return;
                     }
                     if(!pista1.disponible){
@@ -91,6 +88,8 @@ public class PantallaControlador extends javax.swing.JFrame {
                     if(avion.tamano.equals("Pasajeros") && pista2.disponible){
                         txfBit.append("Avion "+ avion.codigo + " asignado a pista de pasajeros.\n");
                         pista2.disponible = false;
+                        avion.pista = 2;
+                        actualizarCmb();
                         return;
                     }
                     if(!pista2.disponible){
@@ -103,6 +102,8 @@ public class PantallaControlador extends javax.swing.JFrame {
                     if(avion.tamano.equals("Privado") && pista3.disponible){
                         txfBit.append("Avion "+ avion.codigo + " asignado a pista privada.\n");
                         pista3.disponible = false;
+                        avion.pista = 3;
+                        actualizarCmb();
                         return;
                     }
                     if(!pista3.disponible){
@@ -130,6 +131,11 @@ public class PantallaControlador extends javax.swing.JFrame {
                         txfBit.append("Avion "+ avion.codigo + " asignado a puerta de carga.\n");
                         puerta1.disponible = false;
                         avion.tiempo += 10;
+                        avion.puerta = 1;
+                        avion.pista = -1;
+                        pista1.disponible = true;
+                        avion.refPuerta = puerta1;
+                        actualizarCmb();
                         break;
                     }
                     if(!puerta1.disponible){
@@ -143,6 +149,11 @@ public class PantallaControlador extends javax.swing.JFrame {
                         txfBit.append("Avion "+ avion.codigo + " asignado a puerta de pasajeros.\n");
                         puerta2.disponible = false;
                         avion.tiempo += 10;
+                        avion.puerta = 2;
+                        avion.pista = -1;
+                        pista2.disponible = true;
+                        avion.refPuerta = puerta2;
+                        actualizarCmb();
                         break;
                     }
                     if(!puerta2.disponible){
@@ -156,6 +167,11 @@ public class PantallaControlador extends javax.swing.JFrame {
                         txfBit.append("Avion "+ avion.codigo + " asignado a puerta privada.\n");
                         puerta3.disponible = false;
                         avion.tiempo += 10;
+                        avion.puerta = 3;
+                        avion.pista = -1;
+                        pista3.disponible = true;
+                        avion.refPuerta = puerta3;
+                        actualizarCmb();
                         break;
                     }
                     if(!puerta3.disponible){
@@ -167,28 +183,61 @@ public class PantallaControlador extends javax.swing.JFrame {
         }
     }
     
-    void actualizar(){
-        cmbAprox.removeAllItems();
+    
+    void actualizarCmb(){
         cmbEnPista.removeAllItems();
+        cmbAprox.removeAllItems();
+
+
+        for (int i = 0; i < cliente.aviones.size(); i++) {
+            Avion avion = cliente.aviones.get(i);
+            if(avion.tiempo > 0 && !avion.aterrizado){
+
+                cmbAprox.addItem("" + avion.codigo);
+            }
+            if(avion.aterrizado && avion.pista == -1 && avion.puerta == -1){
+
+                cmbAprox.addItem("" +avion.codigo);
+            }
+            if(avion.aterrizado && avion.puerta == -1 && avion.pista != -1 ){
+
+                cmbEnPista.addItem("" +avion.codigo);
+            }
+            if(avion.tiempo > 0 && avion.pista == -1 && avion.puerta != -1){
+                
+                cmbEnPista.addItem("" +avion.codigo);
+            }
+        }
+    }
+    
+    
+    void actualizar(){
         txfAprox.setText("");
         txfPista.setText("");
         for (int i = 0; i < cliente.aviones.size(); i++) {
             Avion avion = cliente.aviones.get(i);
-            if(avion.tiempo > 0 && avion.puerta == -1){
+            if(avion.tiempo > 0 && !avion.aterrizado){
                 txfAprox.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " aproximándose en " + avion.tiempo +".\n");
-                cmbAprox.addItem("" + avion.codigo);
+                
             }
-            if(avion.tiempo == 0 && avion.pista == -1 && avion.puerta == -1){
-                txfAprox.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + "esperando pista.\n");
-                cmbAprox.addItem("" +avion.codigo);
+            if(avion.aterrizado && avion.pista == -1 && avion.puerta == -1){
+                txfAprox.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " esperando pista.\n");
+             
             }
-            if(avion.tiempo > 0 && avion.pista != -1 && avion.puerta == -1 ){
-                txfPista.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + "haciendo taxi a la puerta " + avion.puerta +".\n");
-                cmbPista.addItem("" +avion.codigo);
+            if(avion.aterrizado && avion.puerta == -1 && avion.pista != -1 ){
+                txfPista.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " esperando puerta.\n");
+             
             }
-            if(avion.tiempo == 0 && avion.pista != -1 && avion.puerta != -1){
-                txfPista.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + "llegando en " + avion.tiempo + "segundos a la puerta " + avion.puerta +".\n");
-                cmbPista.addItem("" +avion.codigo);
+            if(avion.tiempo > 0 && avion.pista == -1 && avion.puerta != -1){
+                txfPista.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " llegando en " + avion.tiempo + " segundos a la puerta " + avion.puerta +".\n");
+               
+            }
+            if(avion.tiempo == 0 && avion.pista == -1 && avion.puerta != -1){
+                txfBit.append("Avión número "+ avion.codigo + ", de "+ avion.tamano + " desembarcó en puerta " + avion.puerta + " y está siendo guardado en un hangar.\n");
+                cliente.avionesPrevios.add(avion);
+                cliente.aviones.remove(avion);
+                avion.refPuerta.disponible = true;
+                actualizarCmb();
             }
         }
     }
@@ -406,7 +455,12 @@ public class PantallaControlador extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbPistaActionPerformed
 
     private void botonPuertaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPuertaActionPerformed
-        asignarPuerta(Integer.parseInt(cmbEnPista.getSelectedItem().toString()), cmbPuerta.getSelectedItem().toString() );
+        try{
+            asignarPuerta(Integer.parseInt(cmbEnPista.getSelectedItem().toString()), cmbPuerta.getSelectedItem().toString() );
+        }
+        catch(Exception e){
+            txfBit.append("No hay aviones para seleccionar.\n");
+        }
     }//GEN-LAST:event_botonPuertaActionPerformed
 
     private void botonPistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPistaActionPerformed

@@ -14,7 +14,12 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        PantallaControlador pantalla = new PantallaControlador();
-        pantalla.setVisible(true);
+        
+        //PantallaControlador pantalla = new PantallaControlador();
+        //pantalla.setVisible(true);
+        ClienteVentana cliente = new ClienteVentana();
+        cliente.conectar();
+        
+        cliente.start();
     }
 }

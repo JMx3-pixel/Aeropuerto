@@ -15,8 +15,10 @@ public class Avion {
     public boolean aTiempo;
     public int pista = -1;
     public int puerta = -1;
+    public Puerta refPuerta;
     public String estado;
     public int tiempo = 10;
+    public boolean aterrizado = false;
     
     public Avion(int codigo){
         this.codigo = codigo;
@@ -43,11 +45,11 @@ public class Avion {
         int n = Funciones.getRandom(0, 2);
         switch(n){
             case 0:
-                return "Grande";
+                return "Carga";
             case 1:
-                return "Mediano";
+                return "Pasajeros";
             default:
-                return "Pequeno";
+                return "Privado";
         }
     }
     
@@ -59,7 +61,7 @@ public class Avion {
             case 1:
                 return "Pasajeros";
             default:
-                return "Privados";
+                return "Privado";
         }
     }
     

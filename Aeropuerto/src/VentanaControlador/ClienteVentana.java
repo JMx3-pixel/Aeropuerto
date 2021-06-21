@@ -13,6 +13,7 @@ import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Jean Paul
  */
-public class ClienteVentana{
+public class ClienteVentana extends Thread{
     public Socket socketRef;
     public DataOutputStream writer;
     public DataInputStream reader;
@@ -29,6 +30,7 @@ public class ClienteVentana{
     public String nombre;
     public String leido;
     public boolean running;
+    public PantallaControlador refPantalla;
     
     public ClienteVentana() {
         aviones = new ArrayList<Avion>();
@@ -36,6 +38,9 @@ public class ClienteVentana{
         nombre = "VentanaControlador";
         leido = "vacio";
         running = true;
+        
+        
+        
     }
     
     public void conectar(){
@@ -66,6 +71,32 @@ public class ClienteVentana{
                 Logger.getLogger(ClienteVentana.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    @Override
+    public void run(){
+        refPantalla = new PantallaControlador();
+        refPantalla.cliente = this;
+        refPantalla.setVisible(true);
+        refPantalla.setItems();
+        refPantalla.actualizar();
+        refPantalla.actualizarCmb();
+        while(running){
+            try{
+                Thread.sleep(1000);
+                for (int i = 0; i < this.aviones.size(); i++) {
+                
+                    if(this.aviones.get(i).tiempo > 0)
+                        this.aviones.get(i).tiempo --;
+                    else
+                        this.aviones.get(i).aterrizado = true;
+                    refPantalla.actualizar();
+                }
+            }
+            catch(InterruptedException e){
+                
+            }
+        }
+        
     }
     
     public void enviarAviones(){
