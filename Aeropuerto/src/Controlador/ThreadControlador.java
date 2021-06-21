@@ -41,12 +41,12 @@ public class ThreadControlador extends Thread{
                         System.out.println("avion " + actual.codigo + " recibido");
                         break;
                     case "VentanaControlador":
-                        System.out.println("enviando aviones");
+                        //System.out.println("enviando aviones");
                         String array = JsonClass.arrayString(server.aviones);
                         escribir(array);
                         break;
                     case "reenvio":
-                        System.out.println("aviones modificados");
+                        //System.out.println("aviones modificados");
                         server.avionesString = reader.readUTF();
                         break;
                     case "consulta":

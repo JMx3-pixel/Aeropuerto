@@ -50,7 +50,7 @@ public class ClienteVentana extends Thread{
                 reader = new DataInputStream(socketRef.getInputStream());
                 writer = new DataOutputStream(socketRef.getOutputStream());
                 escribir(nombre);
-                System.out.println("pidiendo avion");
+                //System.out.println("pidiendo avion");
                 //sleep(1000);
                 avionesPrevios = JsonClass.arrayFromString(reader.readUTF());
                 System.out.println(avionesPrevios.size() + " aviones recibidos");
@@ -80,6 +80,7 @@ public class ClienteVentana extends Thread{
         refPantalla.actualizar();
         refPantalla.actualizarCmb();
         while(running){
+            refPantalla.actualizar();
             try{
                 Thread.sleep(1000);
                 for (int i = 0; i < this.aviones.size(); i++) {

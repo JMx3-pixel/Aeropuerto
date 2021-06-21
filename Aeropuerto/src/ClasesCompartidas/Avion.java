@@ -73,7 +73,7 @@ public class Avion {
     public void doRandom(int i){
         this.aTiempo = tiempoAleatorio();
         this.tamano = tamanoAleatorio();
-        this.tiempo = i*2+2;
+        this.tiempo = Funciones.getRandom(10 + i, 20 + i);
         if(!aTiempo)
             tiempo += 10;
     }
