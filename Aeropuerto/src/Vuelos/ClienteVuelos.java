@@ -19,12 +19,10 @@ import java.util.logging.Logger;
 public class ClienteVuelos {
     public Socket socketRef;
     public DataOutputStream writer;
-    public String nombre;
-    int contador;
+    public int contador;
     
     public ClienteVuelos(){
         contador = Funciones.getRandom(3, 13);
-        nombre = "Vuelos";
     }
     
     public void conectar(){

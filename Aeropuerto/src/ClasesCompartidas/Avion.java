@@ -53,18 +53,6 @@ public class Avion {
         }
     }
     
-    public String tipoAleatorio(){
-        int n = Funciones.getRandom(0, 2);
-        switch(n){
-            case 0:
-                return "Carga";
-            case 1:
-                return "Pasajeros";
-            default:
-                return "Privado";
-        }
-    }
-    
     public boolean tiempoAleatorio(){
         int n = Funciones.getRandom(0, 1);
         return n == 0;
